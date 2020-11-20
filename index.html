@@ -1,0 +1,96 @@
+<!doctype html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Clock</title>
+
+            <style>
+
+                html {
+                    background: rgb(180, 232, 248);
+                    text-align: center;
+                    font-size: 10px;
+                }
+                .clock {
+                    width: 30rem;
+                    height: 30rem;
+                    border:20px solid white;
+                    border-radius:50%;
+                    margin:50px auto;
+                    position: relative;
+                    padding:2rem;
+                    box-shadow:
+                        0 0 0 4px rgba(0,0,0,0.1),
+                        inset 0 0 0 3px #EFEFEF,
+                        inset 0 0 10px black,
+                        0 0 10px rgba(0,0,0,0.2);
+                    margin-top: 100px;
+                }
+
+                .clock-face {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                transform: translateY(-3px);
+                }
+
+
+                .hand {
+                    width:50%;
+                    height:6px;
+                    background:black;
+                    position: absolute;
+                    top:50%;
+                    transform-origin: 100%;     /*so that the origin of the hands are on the middle of the clock, ie. the pivit is on the very right edge of the hand (and not middle of the hands) (default is 50% which is the middle of the hands)*/
+                    transform: rotate(90deg);   /*hands were was at the position of 9'o clock, so using this we brought it at */
+                    transition: all 0.05s;  /*it will move every 0.05*/
+                    transition-timing-function: cubic-bezier(0.1, 2.0, 0.58, 1);    /*tick tick of the hand*/
+                }
+
+            </style>
+            
+        </head>
+
+        <body>
+            <div class="clock">
+                <div class="clock-face">
+                    <div class="hand hour-hand"></div>
+                    <div class="hand minute-hand"></div>
+                    <div class="hand second-hand"></div>
+                </div>
+            </div>
+
+            <script>
+                
+                const second_hand = document.querySelector(".second-hand");
+                const minute_hand = document.querySelector(".minute-hand");
+                const hour_hand = document.querySelector('.hour-hand');
+
+                function setDate() {
+                    const now = new Date();
+                    const seconds = now.getSeconds();   //it gives us the seconds or current minute
+                    //console.log(seconds);
+                    const seconds_degree = ((seconds/60)*360)+90;  //to get the seconds in degrees (i.e 15 mins = 90 degree)
+                    //console.log(seconds_degree)                                               //+90 because in the css we has -> transfor: rotate(90deg) else it eill show 90 secs late
+                    second_hand.style.transform = `rotate(${seconds_degree}deg)`;   //seconds hand will move according to the second
+                    
+                    //*minutes and hours shoulb be inside this function(shouldn't make seperate functions for each of them)
+                    
+                    //minutes
+                    const minutes = now.getMinutes();
+                    //console.log(minutes);
+                    const minutes_degree = ((minutes/60)*360)+90; 
+                    minute_hand.style.transform = `rotate(${minutes_degree}deg)`; 
+
+                    //hours
+                    const hours = now.getHours();
+                    //console.log(hours)
+                    const hours_degree = ((hours/12)*360)+90;
+                    hour_hand.style.transform = `rotate(${hours_degree}deg)`;
+
+                }
+                setInterval(setDate, 1000);
+
+            </script>
+        </body>
+    </html>
